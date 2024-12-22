@@ -11,5 +11,13 @@ public class HelloController {
     public String index() {
         return "hello word";
     }
+    @GetMapping("/user")
+    public String userPage() {
+        return "hello word user";
+    }
+    @GetMapping("/admin")
+    public String adminPage() {
+        return "hello word admin";
+    }
     
 }
