@@ -26,41 +26,41 @@
             <div class="row">
                 <div class="col-md-6 col-12 mx-auto">
                     <h1 class="pb-3 border-bottom">Update a user</h1>
-                    <form method="POST">
-                        <div class="mb-3">
+                    <form:form method="POST" action="/admin/user/update" modelAttribute = "newUser">
+                        <div class="mb-3" style="display: none;">
                             <label for="exampleInputPassword1"
                                 class="form-label">Id</label>
-                            <input type="text" class="form-control"
-                                placeholder="0" />
+                            <form:input type="text" class="form-control"
+                                placeholder="0" path="id" />
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputEmail1"
                                 class="form-label">Email </label>
-                            <input type="email" class="form-control"
+                            <form:input type="email" class="form-control" path="email" disabled ="true"
                                  />
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1"
                                 class="form-label">fullName</label>
-                            <input type="text" class="form-control"
+                            <form:input type="text" class="form-control" path="fullName"
                                  />
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1"
                                 class="form-label">address</label>
-                            <input type="text" class="form-control"
+                            <form:input type="text" class="form-control" path="address"
                                  />
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1"
                                 class="form-label">phone</label>
-                            <input type="text" class="form-control"
+                            <form:input type="text" class="form-control" path="phone"
                                  />
                         </div>
 
                         <button type="submit"
-                            class="btn btn-warning">Create</button>
-                    </form>
+                            class="btn btn-warning">Update</button>
+                    </form:form>
                 </div>
             </div>
         </div>

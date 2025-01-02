@@ -4,7 +4,7 @@
 <!doctype html>
 <html lang="en">
     <head>
-        <title>Title</title>
+        <title>User Detail ${id}</title>
         <!-- Required meta tags -->
         <meta charset="utf-8" />
         <meta
@@ -26,36 +26,19 @@
         <div class="container mt-5">
             <div class="row">
                 <div class="col-12 mx-auto">
-                    <div class="d-flex border-bottom justify-content-between pb-3">
-                        <h2>User</h2>
-                        <a href="/admin/user/create" class="btn btn-primary">Create user</a>
+                    <div class="d-flex border-bottom justify-content-between mb-3">
+                        <h2>User detail where id = ${id}</h2>
                     </div>
-
-                    <table class="table table-bordered mt-3">
-                        <thead>
-                          <tr>
-                            <th>ID</th>
-                            <th>Email</th>
-                            <th>Full Name</th>
-                            <th>Action</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <c:forEach var="user" items="${users1}">
-                            <tr>
-                              <th>${user.id}</th>
-                              <td>${user.email}</td>
-                              <td>${user.fullName}</td>
-                              <td>
-                                  <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
-                                  <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>
-                                  <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
-                              </td>
-                            </tr>
-                          </c:forEach>
-
-                        </tbody>
-                      </table>
+                    <div class="card" style="width: 60%;">
+                        <div class="card-header">
+                        User information
+                        </div>
+                        <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Id: ${id}</li>
+                        <li class="list-group-item">Email: ${user.email}</li>
+                        <li class="list-group-item">Address: ${user.address}</li>
+                        </ul>
+                       </div>
                 </div>
             </div>
           </div>
