@@ -1,58 +1,77 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>User Detail ${id}</title>
-        <!-- Required meta tags -->
         <meta charset="utf-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
-
-        <!-- Bootstrap CSS v5.2.1 -->
-        <link
-            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-            rel="stylesheet"
-            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-            crossorigin="anonymous"
-        />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport"
+            content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content />
+        <meta name="author" content />
+        <title>Admin Nguyễn Đình Thắng</title>
+        <link href="/css/styles.css" rel="stylesheet" />
+        <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js"
+            crossorigin="anonymous"></script>
     </head>
-
-    <body>
-
-        <div class="container mt-5">
-            <div class="row">
-                <div class="col-12 mx-auto">
-                    <div class="d-flex border-bottom justify-content-between mb-3">
-                        <h2>User detail where id = ${id}</h2>
-                    </div>
-                    <div class="card" style="width: 60%;">
-                        <div class="card-header">
-                        User information
+    <body class="sb-nav-fixed">
+        <jsp:include page="../layout/header.jsp" />
+        <div id="layoutSidenav">
+            <jsp:include page="../layout/sidebar.jsp" />
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">Manage Users</h1>
+                        <ol class="breadcrumb">
+                          <li class="breadcrumb-item"><a href="/admin">Dashboard</a></li>
+                          <li class="breadcrumb-item active" aria-current="page">Users</li>
+                        </ol>
+                        <div class="">
+                          <div class="row">
+                              <div class="col-12 mx-auto">
+                                  <div class="d-flex border-bottom justify-content-between pb-3">
+                                      <h2>Table user</h2>
+                                      <a href="/admin/user/create" class="btn btn-primary">Create user</a>
+                                  </div>
+              
+                                  <table class="table table-bordered mt-3">
+                                      <thead>
+                                        <tr>
+                                          <th>ID</th>
+                                          <th>Email</th>
+                                          <th>Full Name</th>
+                                          <th>Action</th>
+                                        </tr>
+                                      </thead>
+                                      <tbody>
+                                        <c:forEach var="user" items="${users1}">
+                                          <tr>
+                                            <th>${user.id}</th>
+                                            <td>${user.email}</td>
+                                            <td>${user.fullName}</td>
+                                            <td>
+                                                <a href="/admin/user/${user.id}" class="btn btn-success">View</a>
+                                                <a href="/admin/user/update/${user.id}" class="btn btn-warning">Update</a>
+                                                <a href="/admin/user/delete/${user.id}" class="btn btn-danger">Delete</a>
+                                            </td>
+                                          </tr>
+                                        </c:forEach>
+              
+                                      </tbody>
+                                    </table>
+                              </div>
+                          </div>
                         </div>
-                        <ul class="list-group list-group-flush">
-                        <li class="list-group-item">Id: ${id}</li>
-                        <li class="list-group-item">Email: ${user.email}</li>
-                        <li class="list-group-item">Address: ${user.address}</li>
-                        </ul>
-                       </div>
-                </div>
+                    </div>
+                </main>
+                <jsp:include page="../layout/footer.jsp" />
             </div>
-          </div>
-
+        </div>
         <script
-            src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-            crossorigin="anonymous"
-        ></script>
-
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-            integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-            crossorigin="anonymous"
-        ></script>
+            src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
     </body>
 </html>
+

@@ -41,7 +41,7 @@ public class UserController {
     public String getUserPage(Model model){
         List<User> users = this.userService.getAllUsers();
         model.addAttribute("users1", users);
-        return "admin/user/listUser";
+        return "admin/user/show";
     }
 
     @RequestMapping("/admin/user/{id}")
@@ -50,13 +50,13 @@ public class UserController {
         model.addAttribute("user", user);
         model.addAttribute("id", id);
         // model.addAttribute("userdetail", user);
-        return "admin/user/show";
+        return "admin/user/detail";
     }
 
     @RequestMapping("/admin/user/create")
     public String getCreateUserPage(Model model) {
         model.addAttribute("newUser", new User());
-        return "admin/user/CreateUser";
+        return "admin/user/create";
     }
 
     @RequestMapping(value = "/admin/user/create", method = RequestMethod.POST)
@@ -69,7 +69,7 @@ public class UserController {
     public String getUpdateUserPage(Model model, @PathVariable long id){
         User currentUser = this.userService.getUsersById(id);
         model.addAttribute("newUser", currentUser);
-        return "admin/user/updateUser";
+        return "admin/user/update";
     }
 
     @PostMapping("/admin/user/update")
@@ -92,7 +92,7 @@ public class UserController {
         // User user = new User();
         // user.setId(user.getId());
         model.addAttribute("newUser", new User());
-        return "admin/user/deleteUser";
+        return "admin/user/delete";
     }
 
     @PostMapping("/admin/user/delete")
