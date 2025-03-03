@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -43,31 +44,49 @@
                             <div class="row">
                                 <div class="col-md-6 col-12 mx-auto">
                                     <h1 class="pb-3 border-bottom">Create a user</h1>
-                                    <form:form method="POST" action="/admin/user/create" modelAttribute="newUser" class="row">
+                                    <form:form method="POST" action="/admin/user/create" modelAttribute="newUser" class="row" enctype="multipart/form-data"                                    >
                                             <div class="mb-3 col-12 col-md-6">
+                                                <c:set var="errorEmail">
+                                                    <form:errors path="email" cssClass="invalid-feedback"/>
+                                                </c:set>
+
                                                 <label for="exampleInputEmail1"
                                                     class="form-label">Email:</label>
-                                                <form:input type="email" class="form-control"
+                                                <form:input type="email" class="form-control ${not empty errorEmail ? 'is-invalid' : ''} "
                                                     path="email" />
+                                                    ${errorEmail}
+
                                             </div>
                                             <div class="mb-3 col-12 col-md-6">
+                                                <c:set var="errorPhone">
+                                                    <form:errors path="phone" cssClass="invalid-feedback"/>
+                                                </c:set>
                                                 <label for="exampleInputPassword1"
                                                     class="form-label">phone:</label>
-                                                <form:input type="text" class="form-control"
+                                                <form:input type="text" class="form-control ${not empty errorPhone ? 'is-invalid' : ''}"
                                                     path="phone" />
+                                                    ${errorPhone}
                                             </div>
 
                                             <div class="mb-3 col-12 col-md-6">
+                                                <c:set var="errorPassword">
+                                                    <form:errors path="password" cssClass="invalid-feedback"/>
+                                                </c:set>
                                                 <label for="exampleInputPassword1"
                                                     class="form-label">Password:</label>
-                                                <form:input type="password" class="form-control"
+                                                <form:input type="password" class="form-control ${not empty errorPassword ? 'is-invalid' : ''}"
                                                     path="password" />
+                                                    ${errorPassword}
                                             </div>
                                             <div class="mb-3 col-12 col-md-6">
+                                                <c:set var="errorFullname">
+                                                    <form:errors path="fullName" cssClass="invalid-feedback" />
+                                                </c:set>
                                                 <label for="exampleInputPassword1"
                                                     class="form-label">fullName:</label>
-                                                <form:input type="text" class="form-control"
+                                                <form:input type="text" class="form-control ${not empty errorFullname ? 'is-invalid' : ''}"
                                                     path="fullName" />
+                                                    ${errorFullname}
                                             </div>
 
 
@@ -82,16 +101,16 @@
                                         <div class="mb-3 col-12 col-md-6">
                                             <label for="exampleInputPassword1"
                                             class="form-label">Role:</label>
-                                            <select class="form-select" aria-label="Small select example">
-                                                <option selected>Admin</option>
-                                                <option value="1">User</option>
-                                              </select>
+                                            <form:select class="form-select" aria-label="Small select example" path="role.name">
+                                                <form:option value="ADMIN">Admin</form:option>
+                                                <form:option value="USER">User</form:option>
+                                              </form:select>
                                         </div>
 
                                         <div class="mb-3 col-12 col-md-6">
                                             <label for="exampleInputPassword1"
                                             class="form-label">Avatar:</label>
-                                        <input type="file" class="form-control" accept=".png, .jpg, .jpeg" id="avatarFile" />
+                                        <input type="file" class="form-control" accept=".png, .jpg, .jpeg" id="avatarFile" name="hoidanitFile"/>
                                         </div>
 
                                         <div class="mb-3 col-12 col-md-6">
