@@ -1,6 +1,7 @@
 package com.example.laptopshop.controller.admin;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,7 +45,7 @@ public class ProductController {
 
     @GetMapping("/admin/product/{id}")
     public String getDetailProduct(Model model, @PathVariable long id) {
-        Product product = this.productService.getProductById(id);
+        Product product = this.productService.getProductById(id).get();
         model.addAttribute("product", product);
         model.addAttribute("id", id);
         return "/admin/product/detail";
@@ -76,19 +77,19 @@ public class ProductController {
     
     @GetMapping("/admin/product/update/{id}")
     public String getUpdateProductPage(Model model, @PathVariable long id){
-        Product currenProduct = this.productService.getProductById(id);
-        model.addAttribute("newProduct", currenProduct);
+        Optional<Product> currenProduct = this.productService.getProductById(id);
+        model.addAttribute("newProduct", currenProduct.get());
         return "admin/product/update";
     }
 
-    @PostMapping(value = "/admin/product/update")
+    @PostMapping("/admin/product/update")
     public String updateProduct(Model model, @ModelAttribute("newProduct") @Valid Product product, BindingResult newProductBindingResult, @RequestParam("uploadFileProduct") MultipartFile file){
         
         // validate
         if (newProductBindingResult.hasErrors()) {
             return "admin/product/create";            
         }
-        Product currenProduct = this.productService.getProductById(product.getId());
+        Product currenProduct = this.productService.getProductById(product.getId()).get();
         if(currenProduct != null){
             if (!file.isEmpty() ) {
                 String image = this.uploadService.handleSaveUploadFile(file, "product");
@@ -110,7 +111,7 @@ public class ProductController {
 
     @GetMapping("/admin/product/delete/{id}")
     public String getDeleteProductPage(Model model, @PathVariable long id){
-        Product deleteProduct = this.productService.getProductById(id);
+        Optional<Product> deleteProduct = this.productService.getProductById(id);
         model.addAttribute("newProduct", deleteProduct);
         return "admin/product/delete";
     }

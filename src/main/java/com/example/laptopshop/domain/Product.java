@@ -1,10 +1,13 @@
 package com.example.laptopshop.domain;
 
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
@@ -42,6 +45,9 @@ public class Product {
     private String factory;
     private String target;
     private String image;
+
+    @OneToMany(mappedBy = "product")
+    List<CartDetail> cartDetails;
 
     public long getId() {
         return id;
@@ -108,6 +114,12 @@ public class Product {
         return "Product [id=" + id + ", name=" + name + ", price=" + price + ", image=" + image + ", detailDesc="
                 + detailDesc + ", shortDesc=" + shortDesc + ", quantity=" + quantity + ", sold=" + sold + ", factory="
                 + factory + ", target=" + target + "]";
+    }
+    public List<CartDetail> getCartDetails() {
+        return cartDetails;
+    }
+    public void setCartDetails(List<CartDetail> cartDetails) {
+        this.cartDetails = cartDetails;
     }
 
     
