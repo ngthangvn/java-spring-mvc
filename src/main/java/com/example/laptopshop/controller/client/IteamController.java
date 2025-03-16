@@ -43,9 +43,13 @@ public class IteamController {
         long productId = id;
 
         String email = (String) session.getAttribute("email");
-        this.productService.handleProductToCart(email, productId);
+        this.productService.handleProductToCart(email, productId, session);
 
         return "redirect:/";
     }
     
+    @GetMapping("/cart")
+    public String cartDetailPage() {
+        return "client/cart/CartHome";
+    }
 }

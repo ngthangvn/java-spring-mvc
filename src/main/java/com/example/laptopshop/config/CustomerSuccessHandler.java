@@ -57,6 +57,8 @@ public class CustomerSuccessHandler implements AuthenticationSuccessHandler {
             session.setAttribute("avatar", user.getAvatar());
             session.setAttribute("id", user.getId());
             session.setAttribute("email", user.getEmail());
+            int sum = user.getCart().getSum();
+            session.setAttribute("sum", sum);
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
 
