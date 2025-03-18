@@ -2,7 +2,7 @@ package com.example.laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
-
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
 
 import com.example.laptopshop.domain.Cart;
@@ -13,20 +13,24 @@ import com.example.laptopshop.repository.CartDetailRepository;
 import com.example.laptopshop.repository.CartRepository;
 import com.example.laptopshop.repository.ProductRepository;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Service
 public class ProductService {
+
+    private final AuthenticationSuccessHandler CustomerSuccessHandler;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
     private final UserService userService;
 
-    public ProductService(ProductRepository productRepository, CartRepository cartRepository, CartDetailRepository cartDetailRepository, UserService userService) {
+    public ProductService(ProductRepository productRepository, CartRepository cartRepository, CartDetailRepository cartDetailRepository, UserService userService, AuthenticationSuccessHandler CustomerSuccessHandler) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.userService = userService;
+        this.CustomerSuccessHandler = CustomerSuccessHandler;
     }
     
     public List<Product> getAllProducts(){
@@ -100,5 +104,22 @@ public class ProductService {
 
     public Cart fetchByUser(User user){
         return this.cartRepository.findByUser(user);
+    }
+
+    public void deleteCartById(long productId, HttpSession session){
+        Optional<CartDetail> cartDetail = this.cartDetailRepository.findById(productId);
+
+        if (cartDetail.isPresent()) {
+            Cart cart = cartDetail.get().getCart();
+            this.cartDetailRepository.deleteById(productId);
+            int sum = cart.getSum() -1;
+            if (sum > 1) {
+                cart.setSum(sum);
+                this.cartRepository.save(cart);
+                session.setAttribute("sum", sum);
+            } else {
+                this.cartRepository.delete(cart);
+            }
+        }
     }
 }

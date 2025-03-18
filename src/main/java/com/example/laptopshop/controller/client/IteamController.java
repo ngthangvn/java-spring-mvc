@@ -3,6 +3,7 @@ package com.example.laptopshop.controller.client;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,13 +26,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class IteamController {
 
+    private final DaoAuthenticationProvider authProvider;
+
     private final AuthenticationSuccessHandler CustomerSuccessHandler;
 
     private final ProductService productService;
 
-    public IteamController(ProductService productService, AuthenticationSuccessHandler CustomerSuccessHandler){
+    public IteamController(ProductService productService, AuthenticationSuccessHandler CustomerSuccessHandler, DaoAuthenticationProvider authProvider){
         this.productService = productService;
         this.CustomerSuccessHandler = CustomerSuccessHandler;
+        this.authProvider = authProvider;
 
     }
     
@@ -75,5 +79,14 @@ public class IteamController {
         model.addAttribute("cartDetails", cartDetails);
         model.addAttribute("totalPrice", totalPrice);
         return "client/cart/CartHome";
+    }
+
+    @PostMapping("/delete-cart-product/{id}")
+    public String deleteCartProduct(@PathVariable long id, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        long productId = id;
+
+        this.productService.deleteCartById(productId, session);
+        return "redirect:/cart";
     }
 }
