@@ -1,4 +1,6 @@
-<%@page contentType="text/html" pageEncoding="UTF-8" %>
+
+
+        <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
@@ -90,24 +92,12 @@
                                     <td>
                                         <div class="input-group quantity mt-4"
                                             style="width: 100px;">
-                                            <div class="input-group-btn">
-                                                <button
-                                                    class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                                    <i class="fa fa-minus"></i>
-                                                </button>
-                                            </div>
                                             <input type="text"
                                                 class="form-control form-control-sm text-center border-0"
                                                 value="${cartDetail.quantity}"
                                                 data-cart-detail-id="${cartDetail.id}" 
                                                 data-cart-detail-price="${cartDetail.price}"
                                                 data-cart-detail-index="${status.index}">
-                                            <div class="input-group-btn">
-                                                <button
-                                                    class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                    <i class="fa fa-plus"></i>
-                                                </button>
-                                            </div>
                                         </div>
                                     </td>
                                     <td>
@@ -136,66 +126,105 @@
                     </table>
                 </div>
 
-                <div class="mt-5 row g-4 justify-content-start">
-                    <div class="col-12 col-md-8">
-                        <div class="bg-light rounded">
-                            <div class="p-4">
-                                <h1 class="display-6 mb-4">Cart <span
-                                        class="fw-normal">Total</span></h1>
-                                <div
-                                    class="d-flex justify-content-between mb-4">
-                                    <h5 class="mb-0 me-4">Subtotal:</h5>
-                                    <p class="mb-0" data-cart-total-price="${totalPrice}">
-                                        <fmt:formatNumber type="number"
-                                        
-                                            value="${totalPrice}" /> đ
-                                    </p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <h5 class="mb-0 me-4">Shipping</h5>
-                                    <div class>
-                                        <p class="mb-0">Flat rate: $3.00</p>
+                <form action="/place-order" method="post" modelAttribute="cart">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    <div class="mt-5 row g-4 justify-content-start">
+                        <div class="col-12 col-md-6">
+                                <div class="p-4">
+                                    <h5 class="display-6 mb-4">Thông tin người nhận </h5>
+                                    <div class="row">
+                                        <div class="colo-12 col-lg-6 col-xl-7">
+                                            <label class="form-label my-3">Tên người nhận</label>
+                                            <input type="text" class="form-controller" name="receiverName" required>
+                                        </div>
+                                        <div class="colo-12 col-lg-6 col-xl-7">
+                                            <label class="form-label my-3">Địa chỉ người nhận</label>
+                                            <input type="text" class="form-controller" name="receiverAddress" required>
+                                        </div>
+                                        <div class="colo-12 col-lg-6 col-xl-7">
+                                            <label class="form-label my-3">Số điện thoại</label>
+                                            <input type="text" class="form-controller" name="receiverPhone" required>
+                                        </div>
                                     </div>
-                                </div>
-                                <p class="mb-0 text-end">Shipping to
-                                    Ukraine.</p>
-                            </div>
-                            <div
-                                class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                                <h5 class="mb-0 ps-4 me-4">Total</h5>
-                                <p class="mb-0" data-cart-total-price="${totalPrice}"    >
-                                    <fmt:formatNumber type="number"
-                                    
-                                        value="${totalPrice}" /> đ
-                                </p>
-                            </div>
-                            <form:form action="/confirm-checkout" method="post" modelAttribute="cart">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-                                <div>
-                                    <c:forEach var="cartDetail" items="${cart.cartDetails}" varStatus="status">
-                                        <div class="mb-3">
-                                            <label>Id</label>
-                                            <form:input type="text" class="form-control" value="${cartDetail.id}" path="cartDetails[${status.index}].id">
-                                        </div>
-                                        <div class="mb-3">
-                                            <label>Quantity</label>
-                                            <form:input type="text" class="form-control" value="${cartDetail.quantity}" path="cartDetails[${status.index}].quantity">
-                                        </div>
-                                    </c:forEach>
-                                   
-                                </div>
-                                <button
-                                class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                                type="button">Proceed Checkout</button>
-                            </form:form>
-                            
+                                </div>   
                         </div>
                     </div>
-                </div>
+                </form>
+
+
+
+
+
             </div>
         </div>
         <!-- Cart Page End -->
 
+                <!-- Checkout Page Start -->
+                <div class="container-fluid py-5">
+                    <div class="container py-5">
+                        <h1 class="mb-4">Billing details</h1>
+                        <form action="#">
+                            <div class="row d-flex g-5">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Têm người nhận<sup>*</sup></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Địa chỉ người nhận <sup>*</sup></label>
+                                        <input type="text" class="form-control" placeholder="House Number Street Name">
+                                    </div>
+                                    <div class="form-item">
+                                        <label class="form-label my-3">Điện thoại<sup>*</sup></label>
+                                        <input type="text" class="form-control">
+                                    </div>
+                                    <hr>
+                                </div>
+                                
+                                    <div class="col-12 col-md-6">
+                                    
+                                        <div class="bg-light rounded">
+                                            <div class="p-4">
+                                                <h1 class="display-6 mb-4">Cart <span
+                                                        class="fw-normal">Total</span></h1>
+                                                <div
+                                                    class="d-flex justify-content-between mb-4">
+                                                    <h5 class="mb-0 me-4">Subtotal:</h5>
+                                                    <p class="mb-0" data-cart-total-price="${totalPrice}">
+                                                        <fmt:formatNumber type="number"
+                                                        
+                                                            value="${totalPrice}" /> đ
+                                                    </p>
+                                                </div>
+                                                <div class="d-flex justify-content-between">
+                                                    <h5 class="mb-0 me-4">Shipping</h5>
+                                                    <div class>
+                                                        <p class="mb-0">Flat rate: $3.00</p>
+                                                    </div>
+                                                </div>
+                                                <p class="mb-0 text-end">Shipping to
+                                                    Ukraine.</p>
+                                            </div>
+                                            <div
+                                                class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
+                                                <h5 class="mb-0 ps-4 me-4">Total</h5>
+                                                <p class="mb-0" data-cart-total-price="${totalPrice}"    >
+                                                    <fmt:formatNumber type="number"
+                                                    
+                                                        value="${totalPrice}" /> đ
+                                                </p>
+                                            </div>
+                                            <button
+                                                class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
+                                                type="button">Proceed Checkout</button>
+                                        </div>
+                
+                                    </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <!-- Checkout Page End -->
         <jsp:include page="../layout/footer.jsp" />
 
         <!-- Back to Top -->

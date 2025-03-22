@@ -2,9 +2,11 @@ package com.example.laptopshop.service;
 
 import java.util.List;
 import java.util.Optional;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Service;
-
+import com.example.laptopshop.controller.admin.DashboardController;
 import com.example.laptopshop.domain.Cart;
 import com.example.laptopshop.domain.CartDetail;
 import com.example.laptopshop.domain.Product;
@@ -19,18 +21,27 @@ import jakarta.servlet.http.HttpSession;
 @Service
 public class ProductService {
 
+    private final SecurityFilterChain filterChain;
+
+    private final DashboardController dashboardController;
+
+    private final DaoAuthenticationProvider authProvider;
+
     private final AuthenticationSuccessHandler CustomerSuccessHandler;
     private final ProductRepository productRepository;
     private final CartRepository cartRepository;
     private final CartDetailRepository cartDetailRepository;
     private final UserService userService;
 
-    public ProductService(ProductRepository productRepository, CartRepository cartRepository, CartDetailRepository cartDetailRepository, UserService userService, AuthenticationSuccessHandler CustomerSuccessHandler) {
+    public ProductService(ProductRepository productRepository, CartRepository cartRepository, CartDetailRepository cartDetailRepository, UserService userService, AuthenticationSuccessHandler CustomerSuccessHandler, DaoAuthenticationProvider authProvider, DashboardController dashboardController, SecurityFilterChain filterChain) {
         this.productRepository = productRepository;
         this.cartRepository = cartRepository;
         this.cartDetailRepository = cartDetailRepository;
         this.userService = userService;
         this.CustomerSuccessHandler = CustomerSuccessHandler;
+        this.authProvider = authProvider;
+        this.dashboardController = dashboardController;
+        this.filterChain = filterChain;
     }
     
     public List<Product> getAllProducts(){
@@ -119,6 +130,17 @@ public class ProductService {
                 session.setAttribute("sum", sum);
             } else {
                 this.cartRepository.delete(cart);
+            }
+        }
+    }
+
+    public void handleCheckOut(List<CartDetail> cartDetails){
+        for (CartDetail cartDetail : cartDetails){
+            Optional<CartDetail> cdOptional = this.cartDetailRepository.findById(cartDetail.getId());
+            if (cdOptional.isPresent()){
+                CartDetail curenCartDetail = cdOptional.get();
+                curenCartDetail.setQuantity(cartDetail.getQuantity());
+                this.cartDetailRepository.save(curenCartDetail);
             }
         }
     }
